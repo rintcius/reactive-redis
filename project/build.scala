@@ -34,7 +34,8 @@ object RootBuild extends Build {
 
   def defaultSettings = Seq(
     resolvers += "Spring remote" at "http://repo.spring.io/libs-release-remote",
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint"),
+    javacOptions in (Compile, compile) ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint", "-Werror"),
+    javacOptions in (Compile, doc)  ++= Seq("-source", "1.8"),
     publishArtifact in Test := true
   )
 

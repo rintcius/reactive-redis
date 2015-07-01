@@ -11,7 +11,7 @@ class Driver(redisClient: RedisClient)(implicit val executionContext: ExecutionC
 
   override def onCommand(command: RedisCommand): Future[RedisResult] = command match {
     case Ping => redisClient.ping.map(StringResult)
-    case Set(k,v, ex, px, nx, xx) => redisClient.set(k, v, ex, px, toBool(nx), toBool(xx)).map(toStatusResult)
+    case Set(k,v, ex, px, keyCheck) => redisClient.set(k, v, ex, px, keyCheck == KeyMustNotExist, keyCheck == KeyMustExist).map(toStatusResult)
   }
 
   private def toBool[A](option: Option[A]) = if (option.isDefined) true else false

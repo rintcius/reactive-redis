@@ -7,15 +7,22 @@ object RootBuild extends Build {
     val akkaVersion = "2.3.11"
     val akkaStreamVersion = "1.0-RC4"
 
-    val streams = Seq(
+    val common = Seq(
+      "junit" % "junit" % "4.12" % Test,
+      "com.novocode" % "junit-interface" % "0.11" % Test
+    )
+
+    val driverApi = common
+
+    val rediscala = common ++ Seq(
+      "com.etaty.rediscala" %% "rediscala" % "1.4.2"
+    )
+
+    val streams = common ++ Seq(
       "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
       "com.typesafe.akka" %% "akka-stream-experimental" % akkaStreamVersion,
       "org.reactivestreams" % "reactive-streams-tck" % "1.0.0" % Test,
       "org.scalatest" %% "scalatest" % "2.2.5" % Test
-    )
-
-    val rediscala = Seq(
-      "com.etaty.rediscala" %% "rediscala" % "1.4.2"
     )
   }
 
@@ -27,7 +34,8 @@ object RootBuild extends Build {
 
   def defaultSettings = Seq(
     resolvers += "Spring remote" at "http://repo.spring.io/libs-release-remote",
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
+    javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint"),
+    publishArtifact in Test := true
   )
 
   def moduleId(name: String) = "reactive-redis-" + name
@@ -35,9 +43,11 @@ object RootBuild extends Build {
   def module(name: String) = Project(id = moduleId(name), base = file(name), settings = defaultSettings)
   def driverModule(name: String) = module("driver-" + name)
 
-  lazy val driverApi = driverModule("api")
+  lazy val driverApi = driverModule("api") settings (
+    libraryDependencies ++= dependencies.driverApi
+  )
 
-  lazy val rediscala = driverModule("rediscala").dependsOn(driverApi) settings (
+  lazy val rediscala = driverModule("rediscala").dependsOn(driverApi % "test->test;compile->compile") settings (
     libraryDependencies ++= dependencies.rediscala
   )
 
@@ -49,7 +59,7 @@ object RootBuild extends Build {
     libraryDependencies ++= dependencies.rediscala ++ dependencies.streams
   )
 
-  lazy val root = Project(id = moduleId("root"), base = file("."))
+  lazy val root = project.in(file("."))
     .aggregate(driverApi, rediscala, streams, tests)
 
 }

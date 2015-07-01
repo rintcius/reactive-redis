@@ -1,7 +1,7 @@
 package net.cakesolutions.reactiveredis.tests.tck
 
 import net.cakesolutions.reactiveredis.driver.api.RedisDriver
-import net.cakesolutions.reactiveredis.driver.rediscala.Driver
+import net.cakesolutions.reactiveredis.driver.rediscala.RediscalaDriver
 import net.cakesolutions.reactiveredis.tests.tck.poc.SubscriberWhiteBoxSpec
 import redis.RedisClient
 
@@ -9,7 +9,7 @@ object rediscalaCommon {
 
   import TckBase._
 
-  val redisDriver = new Driver(new RedisClient())
+  val redisDriver = new RediscalaDriver(new RedisClient())
 }
 
 class RediscalaBlackBoxSpecs extends SubscriberBlackboxSpec {

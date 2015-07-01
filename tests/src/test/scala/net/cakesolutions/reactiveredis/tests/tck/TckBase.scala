@@ -5,7 +5,6 @@ import akka.stream.ActorMaterializer
 import akka.stream.actor.WatermarkRequestStrategy
 import net.cakesolutions.reactiveredis.driver.api.RedisDriver
 import net.cakesolutions.reactiveredis.driver.api.commands.Ping
-import net.cakesolutions.reactiveredis.driver.rediscala.Driver
 import net.cakesolutions.reactiveredis.streams.ReactiveRedis
 
 trait TckBase {

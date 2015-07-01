@@ -41,6 +41,7 @@ object RootBuild extends Build {
   def moduleId(name: String) = "reactive-redis-" + name
 
   def module(name: String) = Project(id = moduleId(name), base = file(name), settings = defaultSettings)
+
   def driverModule(name: String) = module("driver-" + name)
 
   lazy val driverApi = driverModule("api") settings (
@@ -55,7 +56,7 @@ object RootBuild extends Build {
     libraryDependencies ++= dependencies.streams
   )
 
-  lazy val tests = module("tests").dependsOn(driverApi, rediscala, streams) settings(
+  lazy val tests = module("tests").dependsOn(driverApi, rediscala, streams) settings (
     libraryDependencies ++= dependencies.rediscala ++ dependencies.streams
   )
 

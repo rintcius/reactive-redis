@@ -1,21 +1,19 @@
 package net.cakesolutions.reactiveredis.driver.japi;
 
-import net.cakesolutions.reactiveredis.driver.api.commands;
-import net.cakesolutions.reactiveredis.driver.japi.Commands;
 import net.cakesolutions.reactiveredis.driver.api.RedisDriver;
-
+import net.cakesolutions.reactiveredis.driver.api.commands;
 import net.cakesolutions.reactiveredis.driver.api.results;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
-import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public abstract class CommandsTest {
 

@@ -11,4 +11,8 @@ public class Results {
     public static RedisResult nok() {
         return results.NOK$.MODULE$;
     }
+
+    public static RedisResult stringResult(String s) {
+        return results.stringResult(s);
+    }
 }

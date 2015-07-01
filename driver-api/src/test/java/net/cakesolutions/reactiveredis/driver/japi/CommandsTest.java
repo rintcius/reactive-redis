@@ -31,6 +31,14 @@ public abstract class CommandsTest {
     }
 
     @Test
+    public void testPing() throws Exception {
+        testTemplate(
+                Commands.ping(),
+                Results.stringResult("PONG")
+        );
+    }
+
+    @Test
     public void testSet() throws Exception {
         testTemplate(
                 Commands.set(key, value),

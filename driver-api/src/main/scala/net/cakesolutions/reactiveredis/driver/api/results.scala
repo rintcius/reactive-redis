@@ -7,4 +7,6 @@ object results {
   sealed trait StatusResult extends RedisResult
   case object OK extends StatusResult
   case object NOK extends StatusResult
+
+  def stringResult(s: String) = StringResult(s)
 }

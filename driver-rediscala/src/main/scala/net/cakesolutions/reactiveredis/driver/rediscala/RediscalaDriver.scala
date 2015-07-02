@@ -21,5 +21,7 @@ class RediscalaDriver(redisClient: RedisClient)(implicit val executionContext: E
 
 object RediscalaDriver {
   def rediscalaDriver(host: String, port:Int)(implicit actorRefFactory: ActorRefFactory, executionContext: ExecutionContext) =
-    new RediscalaDriver(new RedisClient(host, port))
+    new RediscalaDriver(redisClient(host, port))
+
+  def redisClient(host: String, port:Int)(implicit actorRefFactory: ActorRefFactory) = new RedisClient(host, port)
 }

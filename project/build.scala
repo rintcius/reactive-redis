@@ -21,6 +21,7 @@ object RootBuild extends Build {
     val streams = common ++ Seq(
       "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
       "com.typesafe.akka" %% "akka-stream-experimental" % akkaStreamVersion,
+      "com.typesafe.akka" %% "akka-stream-testkit-experimental" % akkaStreamVersion % Test,
       "org.reactivestreams" % "reactive-streams-tck" % "1.0.0" % Test,
       "org.scalatest" %% "scalatest" % "2.2.5" % Test
     )

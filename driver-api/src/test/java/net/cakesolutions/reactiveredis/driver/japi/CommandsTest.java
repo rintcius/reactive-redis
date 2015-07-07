@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static net.cakesolutions.reactiveredis.driver.japi.Results.ok;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public abstract class CommandsTest {
 
@@ -60,6 +61,18 @@ public abstract class CommandsTest {
         testTemplate(
                 Commands.get(key, String.class),
                 Results.result(Option.apply(value))
+        );
+    }
+
+    @Test
+    public void testGetUnsupportedClassFails() throws Exception {
+        testTemplate(
+                Commands.set(key, value),
+                ok()
+        );
+        testFailTemplate(
+                Commands.get(key, Long.class),
+                "No deserializer available for java.lang.Long"
         );
     }
 
@@ -113,4 +126,15 @@ public abstract class CommandsTest {
         final results.RedisResult actual = Await.result(future, Duration.apply(1, TimeUnit.SECONDS));
         assertEquals(expected, actual);
     }
+
+    private void testFailTemplate(commands.RedisRequest request, String expectedExceptionMessage) throws Exception {
+        try {
+            final Future<results.RedisResult> future = redisDriver().onRequest(request);
+            final results.RedisResult actual = Await.result(future, Duration.apply(1, TimeUnit.SECONDS));
+            fail("Expected exception, got " + actual);
+        } catch (Exception e) {
+            assertEquals(expectedExceptionMessage, e.getMessage());
+        }
+    }
+
 }

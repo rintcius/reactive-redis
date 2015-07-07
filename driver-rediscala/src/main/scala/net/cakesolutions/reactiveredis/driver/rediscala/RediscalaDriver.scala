@@ -11,7 +11,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 import scala.reflect.classTag
 
-class RediscalaDriver(redisClient: RedisClient)(implicit val executionContext: ExecutionContext) extends RedisDriver {
+class RediscalaDriver(redisClient: RedisCommands with redis.commands.Pipeline)(implicit val executionContext: ExecutionContext) extends RedisDriver {
 
   override def onRequest(request: RedisRequest): Future[RedisResult] = request match {
     case c: RedisCommand => onCommand(redisClient, c)

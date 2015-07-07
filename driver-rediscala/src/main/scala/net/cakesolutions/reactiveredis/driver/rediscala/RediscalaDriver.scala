@@ -38,10 +38,7 @@ class RediscalaDriver(redisClient: RedisClient)(implicit val executionContext: E
   }
 
   private def deserializer[R](tag: ClassTag[R]):Option[ByteStringDeserializer[R]] = tag match {
-    case _ if (tag == classTag[String]) => {
-      val des: ByteStringDeserializer[String] = new ByteStringDeserializerDefault{}.String
-      Some(des.asInstanceOf[ByteStringDeserializer[R]])
-    }
+    case _ if (tag == classTag[String]) => Some(new ByteStringDeserializerDefault{}.String.asInstanceOf[ByteStringDeserializer[R]])
     case _ => None
   }
 

@@ -15,7 +15,7 @@ object RootBuild extends Build {
     val driverApi = common
 
     val rediscala = common ++ Seq(
-      "com.etaty.rediscala" %% "rediscala" % "1.4.2"
+      "com.etaty.rediscala" %% "rediscala" % "1.4.2-redis-pipeline"
     )
 
     val streams = common ++ Seq(

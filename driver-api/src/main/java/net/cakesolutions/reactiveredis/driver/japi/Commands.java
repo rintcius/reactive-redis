@@ -3,7 +3,9 @@ package net.cakesolutions.reactiveredis.driver.japi;
 import net.cakesolutions.reactiveredis.driver.api.commands;
 import net.cakesolutions.reactiveredis.driver.api.commands.RedisCommand;
 import scala.Option;
+import scala.reflect.ClassTag$;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalLong;
 
@@ -20,6 +22,18 @@ public class Commands {
         return commands.noKeyCheck();
     }
 
+    public static RedisCommand dbsize() {
+        return commands.dbsize();
+    }
+
+    public static RedisCommand flushall() {
+        return commands.flushall();
+    }
+
+    public static <R> RedisCommand get(String key, Class<R> clazz) {
+        return commands.<R>get(key, ClassTag$.MODULE$.apply(clazz));
+    }
+
     public static RedisCommand ping() {
         return commands.ping();
     }
@@ -30,6 +44,10 @@ public class Commands {
 
     public static RedisCommand set(String key, String value, OptionalLong ex, OptionalLong px, commands.KeyCheck keyCheck) {
         return commands.set(key, value, toScalaLong(ex), toScalaLong(px), keyCheck);
+    }
+
+    public static commands.RedisRequest pipeline(List<RedisCommand> redisCommands) {
+        return commands.jpipeline(redisCommands);
     }
 
     private static Option<Object> toScalaLong(OptionalLong optional) {

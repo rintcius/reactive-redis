@@ -2,7 +2,7 @@ package net.cakesolutions.reactiveredis.tests.tck
 
 package poc
 
-import net.cakesolutions.reactiveredis.driver.api.commands.RedisCommand
+import net.cakesolutions.reactiveredis.driver.api.commands.RedisRequest
 import org.reactivestreams.tck.SubscriberWhiteboxVerification.{SubscriberPuppet, WhiteboxSubscriberProbe}
 import org.reactivestreams.tck.{SubscriberWhiteboxVerification, TestEnvironment}
 import org.reactivestreams.{Subscriber, Subscription}
@@ -12,14 +12,14 @@ import scala.concurrent.duration.{FiniteDuration, _}
 import scala.language.postfixOps
 
 abstract class SubscriberWhiteBoxSpec(defaultTimeout: FiniteDuration)
-  extends SubscriberWhiteboxVerification[RedisCommand](new TestEnvironment(defaultTimeout.toMillis))
+  extends SubscriberWhiteboxVerification[RedisRequest](new TestEnvironment(defaultTimeout.toMillis))
   with TestNGSuiteLike with TckBase {
 
   import TckBase._
 
   def this() = this(300 millis)
 
-  override def createSubscriber(whiteboxSubscriberProbe: WhiteboxSubscriberProbe[RedisCommand]): Subscriber[RedisCommand] = {
+  override def createSubscriber(whiteboxSubscriberProbe: WhiteboxSubscriberProbe[RedisRequest]): Subscriber[RedisRequest] = {
     new SubscriberDecorator(reactiveRedis(driver).subscriber(), whiteboxSubscriberProbe)
   }
 

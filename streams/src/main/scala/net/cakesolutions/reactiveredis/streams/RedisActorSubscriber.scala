@@ -3,7 +3,7 @@ package net.cakesolutions.reactiveredis.streams
 import akka.actor.ActorLogging
 import akka.stream.actor.{RequestStrategy, ActorSubscriberMessage, ActorSubscriber}
 import net.cakesolutions.reactiveredis.driver.api.RedisDriver
-import net.cakesolutions.reactiveredis.driver.api.commands.RedisCommand
+import net.cakesolutions.reactiveredis.driver.api.commands.RedisRequest
 
 class RedisActorSubscriber(redisDriver: RedisDriver, override protected val requestStrategy: RequestStrategy)
   extends ActorSubscriber with ActorLogging {
@@ -14,8 +14,8 @@ class RedisActorSubscriber(redisDriver: RedisDriver, override protected val requ
     case ActorSubscriberMessage.OnComplete => onComplete
   }
 
-  private def onNext(elem: Any) = if (elem.isInstanceOf[RedisCommand])
-    redisDriver.onCommand(elem.asInstanceOf[RedisCommand]) else
+  private def onNext(elem: Any) = if (elem.isInstanceOf[RedisRequest])
+    redisDriver.onRequest(elem.asInstanceOf[RedisRequest]) else
     onError(new RuntimeException("Unexpected command: " + elem))
 
   private def onError(ex: Throwable) = {

@@ -14,7 +14,9 @@ object commands {
   sealed trait RedisCommand extends RedisRequest
   case object Dbsize extends RedisCommand
   case object Flushall extends RedisCommand
-  case class Get[R: ClassTag](key: String) extends RedisCommand
+  case class Get[R: ClassTag](key: String) extends RedisCommand {
+    val returnClassTag = scala.reflect.classTag[R]
+  }
   case object Ping extends RedisCommand
   case class Set(key: String, value: String, ex: Option[Long], px: Option[Long], keyCheck: KeyCheck) extends RedisCommand
 

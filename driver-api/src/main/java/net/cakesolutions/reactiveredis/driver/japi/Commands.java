@@ -6,6 +6,7 @@ import scala.Option;
 import scala.reflect.ClassTag$;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
 
@@ -32,6 +33,14 @@ public class Commands {
 
     public static <R> RedisCommand get(String key, Class<R> clazz) {
         return commands.<R>get(key, ClassTag$.MODULE$.apply(clazz));
+    }
+
+    public static RedisCommand hlen(String key, Map<String, String> map) {
+        return commands.jhmset(key, map);
+    }
+
+    public static RedisCommand hmset(String key, Map<String, String> map) {
+        return commands.jhmset(key, map);
     }
 
     public static RedisCommand ping() {

@@ -28,6 +28,8 @@ class RediscalaDriver(redisClient: RedisCommands with redis.commands.Pipeline)(i
     case Dbsize => commandContext.dbsize.map(Result(_))
     case Flushall => commandContext.flushall.map(toStatusResult)
     case g:Get[_] => handleGet(commandContext, g)
+    case Hlen(k) => commandContext.hlen(k).map(Result(_))
+    case Hmset(k, m) => commandContext.hmset(k, m).map(toStatusResult)
     case Ping => commandContext.ping.map(Result(_))
     case Set(k,v, ex, px, keyCheck) => commandContext.set(k, v, ex, px, keyCheck == KeyMustNotExist, keyCheck == KeyMustExist).map(toStatusResult)
   }
